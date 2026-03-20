@@ -7,18 +7,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FaPlus, FaClipboardCheck, FaUsers, FaChartLine, FaUsersCog, FaUserCircle, FaEdit, FaTrash, FaSave, FaTimes } from 'react-icons/fa';
 import TeamMembershipManager from '../components/TeamMembershipManager';
 import { fetchWrapper } from '../utils/fetchWrapper';
+import { useUser } from '../contexts/UserContext';
 import { motion } from 'framer-motion';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
-const API_BASE_URL = 'http://localhost:3000/api';
-const fetchOptions = {
-  method: 'GET',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  },
-};
 
 const STATUS_OPTIONS = [
   'PROPOSED',
@@ -38,6 +30,7 @@ const HEALTH_OPTIONS = ['GREEN', 'YELLOW', 'RED'];
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { user } = useUser();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -157,7 +150,7 @@ const ProjectDetails = () => {
           title: newTaskTitle,
           details: newTaskDescription,
           projectID: parseInt(id),
-          userID: 1, // TODO: Get from authenticated user
+          userID: user?.userID,
           status: newTaskStatus,
           percentageComplete: Number(newTaskPercentage),
           priority: newTaskPriority,
@@ -228,20 +221,13 @@ const ProjectDetails = () => {
       return;
     }
 
-    console.log('Submitting stakeholder form:', stakeholderForm);
-    
     try {
       if (editingStakeholderIndex !== null) {
-        // Update existing stakeholder
         const stakeholder = stakeholders[editingStakeholderIndex];
-        console.log(`Updating stakeholder ${stakeholder.stakeholderID} with data:`, stakeholderForm);
-        
         const updatedStakeholder = await fetchWrapper(`/projects/${id}/stakeholders/${stakeholder.stakeholderID}`, {
           method: 'PATCH',
           body: { name: stakeholderForm.name }
         });
-        
-        console.log('API response for update:', updatedStakeholder);
         
         // Update the local state
         const updatedList = [...stakeholders];
@@ -249,18 +235,13 @@ const ProjectDetails = () => {
         setStakeholders(updatedList);
         setEditingStakeholderIndex(null);
       } else {
-        // Create new stakeholder
-        console.log(`Creating new stakeholder for project ${id} with data:`, stakeholderForm);
-        
         const newStakeholder = await fetchWrapper(`/projects/${id}/stakeholders`, {
           method: 'POST',
-          body: { 
-            name: stakeholderForm.name, 
-            projectID: parseInt(id) 
+          body: {
+            name: stakeholderForm.name,
+            projectID: parseInt(id)
           }
         });
-        
-        console.log('API response for create:', newStakeholder);
         
         // Update the local state
         setStakeholders(prev => [...prev, newStakeholder]);

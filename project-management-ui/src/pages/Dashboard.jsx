@@ -4,15 +4,6 @@ import { motion } from 'framer-motion';
 import { FaClipboardList, FaUsers, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
 import { fetchWrapper } from '../utils/fetchWrapper';
 
-const API_BASE_URL = 'http://localhost:3000/api';
-const fetchOptions = {
-  method: 'GET',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  },
-};
 
 const PHASE_GROUPS = {
   PLANNED: ['INITIATING', 'PLANNING'],
@@ -64,9 +55,7 @@ const Dashboard = () => {
     if (!searchQuery.trim()) return;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/search?searchTerm=${encodeURIComponent(searchQuery)}`, fetchOptions);
-      if (!response.ok) throw new Error('Search failed');
-      const data = await response.json();
+      const data = await fetchWrapper(`/search?searchTerm=${encodeURIComponent(searchQuery)}`);
       setSearchResults(data);
     } catch (err) {
       console.error('Search error:', err);

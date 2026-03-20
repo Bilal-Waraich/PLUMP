@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-
-const BASE_URL = 'http://localhost:3000/api';
+import { fetchWrapper } from '../utils/fetchWrapper';
 
 const Risks = () => {
   const [risks, setRisks] = useState([]);
@@ -16,9 +15,7 @@ const Risks = () => {
 
   const fetchRisks = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/risks`);
-      if (!response.ok) throw new Error('Failed to fetch risks');
-      const data = await response.json();
+      const data = await fetchWrapper('/risks');
   
       const sanitized = data.map((r) => ({
         id: r.riskID,
@@ -74,44 +71,6 @@ const Risks = () => {
     setIsModalOpen(true);
   };
 
-//   const handleSave = async (newRisk) => {
-//     try {
-//       const url = editRisk
-//         ? `${BASE_URL}/risks/${editRisk.id}`
-//         : `${BASE_URL}/risks`;
-  
-//       const method = editRisk ? 'PUT' : 'POST';
-  
-//       const payload = {
-//         title: newRisk.title,
-//         description: newRisk.description,
-//         probability: newRisk.probability,
-//         impact: newRisk.impact,
-//         responsePlan: newRisk.responsePlan,
-//         owner: newRisk.owner,
-//         status: newRisk.status || 'Open',
-//       };
-  
-//       const response = await fetch(url, {
-//         method,
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify(payload),
-//       });
-  
-//       if (!response.ok) throw new Error('Failed to save risk');
-  
-//       const saved = await response.json();
-  
-//       setRisks((prev) =>
-//         editRisk
-//           ? prev.map((r) => (r.id === editRisk.id ? { ...saved } : r))
-//           : [...prev, saved]
-//       );
-//     } catch (err) {
-//       console.error('Save failed:', err);
-//     }
-//     setIsModalOpen(false);
-//   };
 
   const handleSave = (newRisk) => {
     setEditRisk(null);
@@ -135,19 +94,6 @@ const Risks = () => {
     setIsModalOpen(false);
   };
 
-//   const handleDelete = async (target) => {
-//     try {
-//       const response = await fetch(`${BASE_URL}/risks/${target.id}`, {
-//         method: 'DELETE',
-//       });
-
-//       if (!response.ok) throw new Error('Delete failed');
-
-//       setRisks((prev) => prev.filter((r) => r.id !== target.id));
-//     } catch (err) {
-//       console.error('Delete failed:', err);
-//     }
-//   };
 
 const handleDelete = (riskToDelete) => {
     setRisks(prevRisks =>

@@ -1,0 +1,74 @@
+# CI pipeline for PLUMP
+# Runs on every push and pull request targeting the main branch.
+# Two jobs — backend (NestJS) and frontend (React/Vite) — run in parallel.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Backend ──────────────────────────────────────────────────────────────────
+  backend:
+    name: Backend (NestJS)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: plump
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: plump/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: file:./dev.db
+
+      - name: Build
+        run: npm run build
+
+      - name: Run unit tests
+        run: npm test -- --passWithNoTests
+        env:
+          DATABASE_URL: file:./dev.db
+
+  # ── Frontend ─────────────────────────────────────────────────────────────────
+  frontend:
+    name: Frontend (React/Vite)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: project-management-ui
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: project-management-ui/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build

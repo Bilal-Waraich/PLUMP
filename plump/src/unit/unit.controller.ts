@@ -16,14 +16,11 @@ export class UnitController {
   @Post()
   async create(@Body() createUnitDto: CreateUnitDto, @Request() req) {
     try {
-      console.log('Received create unit request:', { createUnitDto, user: req.user });
       // Only set the creator as the manager if no managerID is provided
       if (!createUnitDto.managerID) {
         createUnitDto.managerID = req.user.userID;
       }
-      console.log('Updated createUnitDto with managerID:', createUnitDto);
       const unit = await this.unitService.create(createUnitDto);
-      console.log('Unit created successfully:', unit);
 
       // Update the manager's unitID
       if (unit.unitID && unit.managerID) {

@@ -52,12 +52,6 @@ const Team = () => {
   const [userStatus, setUserStatus] = useState({ loading: false, message: '', error: '' });
 
   useEffect(() => {
-    console.log('userLoading:', userLoading);
-    console.log('user:', user);
-    console.log('user.unit:', user?.unit);
-    console.log('user.unit.organizationID:', user?.unit?.organizationID);
-    console.log('user.primaryRole:', user?.primaryRole);
-    console.log('user.role:', user?.role);
     if (!userLoading && user && user.unit && user.unit.organizationID) {
       fetchUnits(user.unit.organizationID);
     } else if (!userLoading && (!user || !user.unit || !user.unit.organizationID)) {
@@ -70,9 +64,7 @@ const Team = () => {
 
   const fetchUnits = async (orgId) => {
     try {
-      console.log('Fetching units for org:', orgId);
       const data = await fetchWrapper(`/units/organization/${orgId}`);
-      console.log('Units data:', data);
       if (Array.isArray(data)) {
         setUnits(data);
       } else {
@@ -312,13 +304,10 @@ const Team = () => {
         active: userForm.active,
         unitID: parseInt(user.unit.unitID, 10)
       };
-      console.log('Creating user with payload:', payload);
-      
       const response = await fetchWrapper('/user-management', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      console.log('User creation response:', response);
       
       setUserStatus({ loading: false, message: 'User created successfully!', error: '' });
       setUserForm({

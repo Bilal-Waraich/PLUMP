@@ -1,66 +1,80 @@
+<!--
+Suggested GitHub Topics: nestjs react typescript prisma docker project-management tailwind fullstack
+-->
+
 <p align="center">
   <img src="Assets/Logo.jpeg" width="250">
 </p>
 
-# PLUMP  
+# PLUMP — Project Management Platform
 
 **Planning & Logistics for Unified Management of Projects**
 
-## Features 💡  
-✅ Task Tracking 📅  
-✅ Team Collaboration 🤝  
-✅ Productivity Insights 📊  
+PLUMP is a full-stack project management platform for task tracking, team collaboration, and productivity insights. It features a React frontend with real-time dashboards and a NestJS REST API backed by Prisma ORM / SQLite.
 
-### Overview
+## Features
 
-PLUMP is a comprehensive project management platform designed to streamline task tracking, team collaboration, and productivity insights. Built with a modern tech stack (NestJS, React, Docker), it supports both frontend and backend modularity, and is suitable for teams seeking a unified solution for project logistics. The purpose of PLUMP is to provide a centralized tool for planning, organizing, and managing projects efficiently, ensuring that teams can collaborate seamlessly and track progress in real-time.
+- **Task Management** — Create, assign, and track tasks with due dates and priority levels
+- **Team Collaboration** — Manage team members, roles, and unit assignments
+- **Project Dashboards** — Real-time productivity charts and progress tracking via Recharts
+- **Budget & Risk Tracking** — Dedicated views for budget management and risk assessment
+- **Calendar View** — Visual timeline of project milestones and deadlines
+- **Authentication** — JWT-based auth with login, signup, and password recovery
+- **Organisation Management** — Multi-org support with role-based access
 
-### Tech Stack
+## Tech Stack
 
-- **Frontend**: React (Vite, Tailwind CSS, Framer Motion, Recharts)
-- **Backend**: NestJS (TypeScript), Prisma ORM, SQLite
-- **Containerization**: Docker & Docker Compose
-- **Other**: GitHub Issues for task management, WhatsApp for quick comms
+| Layer | Technologies |
+|-------|-------------|
+| Frontend | React, Vite, Tailwind CSS, Framer Motion, Recharts |
+| Backend | NestJS, TypeScript, Prisma ORM, SQLite |
+| Infrastructure | Docker, Docker Compose |
 
-### Repository Structure
+## Architecture
 
 ```
-/
-├── Backend/                # Backend documentation and specs
-├── Frontend/               # Frontend documentation and specs
-├── plump/                  # Main backend NestJS app
-├── project-management-ui/  # Main frontend React app
-├── date-detail/, task/     # Feature modules (backend)
-├── Requirements/           # Requirements and process docs
-├── Submissions/            # Submission packages and diagrams
-├── Docs/                   # Meeting notes and documentation
-├── Assets/                 # Images and logos
-├── Docker-compose.yml      # Multi-service orchestration
-└── Group Detailing.txt     # Team member breakdown
+PLUMP/
+├── project-management-ui/   # React/Vite frontend (port 8080)
+│   ├── src/
+│   │   ├── pages/           # Route-level page components
+│   │   ├── components/      # Reusable UI components
+│   │   ├── context/         # Auth & user context providers
+│   │   └── utils/           # API fetch helpers
+│   └── Dockerfile
+├── plump/                   # NestJS backend (port 3000)
+│   ├── src/
+│   │   ├── auth/            # JWT authentication
+│   │   ├── organization/    # Organisation management
+│   │   ├── unit/            # Unit/team management
+│   │   ├── team-membership/ # Member role assignments
+│   │   └── plump/           # Core plump service
+│   ├── prisma/
+│   │   └── schema.prisma    # Database schema
+│   └── Dockerfile
+└── Docker-compose.yml       # Multi-service orchestration
 ```
 
-### Quick Start
+## Quick Start
 
-#### Prerequisites
-
-- [Docker](https://www.docker.com/)
-- [Node.js](https://nodejs.org/) (for local dev)
-
-#### One-Command Setup (Recommended)
+### One-command setup (recommended)
 
 ```bash
+git clone <repo-url>
+cd PLUMP
 docker-compose up --build
 ```
 
 - Frontend: [http://localhost:8080](http://localhost:8080)
 - Backend API: [http://localhost:3000](http://localhost:3000)
 
-#### Manual Setup
+### Manual setup
 
 **Backend**
 ```bash
 cd plump
 npm install
+npx prisma generate
+npx prisma migrate dev
 npm run start:dev
 ```
 
@@ -71,19 +85,13 @@ npm install
 npm run dev
 ```
 
-### Team
+## CI/CD
 
-- **Frontend**: Bissera, Stefan, Milica, Saim
-- **Backend**: Kuranage, Felipe, Bilal, Kamila, Madina, Melek
+GitHub Actions workflows are configured in `.github/workflows/`:
+- `ci.yml` — runs backend and frontend build + tests on every push and PR to `main`
 
-### Documentation
+> **Note on GitHub Pages deployment**: The frontend requires the NestJS backend to function and cannot be served as a standalone static site. To run a local demo, use `docker-compose up --build`.
 
-- **Requirements**: See `/Requirements` and `/Submissions/S25_SE_23_PLUMP_Submission1`
-- **API Docs**: See `/Submissions/S25_SE_23_PLUMP_Submission1/API_documentation.pdf`
-- **ER Diagram**: `/Submissions/S25_SE_23_PLUMP_Submission1/PLUMP_ER_Diagram_Structured.png`
-- **Meetings**: `/Docs/Meetings/`
-- **Productivity Scheme**: See Backend/Frontend folders
+## License
 
-### License
-
-This project is licensed under the GNU General Public License v3.0. See the LICENSE file for details.
+GNU General Public License v3.0 — see [LICENSE](LICENSE) for details.

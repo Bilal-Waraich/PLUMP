@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { fetchWrapper } from '../utils/fetchWrapper';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -11,19 +12,11 @@ const ForgotPassword = () => {
     setStatus({ loading: true, message: '', error: false });
 
     try {
-      const res = await fetch('/api/auth/forgot-password', {
+      const data = await fetchWrapper('/auth/forgot-password', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: { email },
       });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setStatus({ loading: false, message: data.message || 'Reset link sent!', error: false });
-      } else {
-        throw new Error(data.message || 'Something went wrong.');
-      }
+      setStatus({ loading: false, message: data.message || 'Reset link sent!', error: false });
     } catch (err) {
       setStatus({ loading: false, message: err.message, error: true });
     }

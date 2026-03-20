@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { fetchWrapper } from '../utils/fetchWrapper';
 
 export default function UnitManagement() {
   const [form, setForm] = useState({ name: '', description: '', manager: '' });
@@ -38,20 +39,14 @@ export default function UnitManagement() {
         setStatus({ loading: false, message: '', error: true });
         return;
       }
-      const response = await fetch('http://localhost:3000/api/units', {
+      await fetchWrapper('/units', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        body: {
           name: form.name,
           description: form.description,
           organizationID: orgDraft.organizationID,
-        })
+        }
       });
-
-      if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Server error: ${errText}`);
-      }
 
       setStatus({ loading: false, message: 'Unit created successfully!', error: false });
       setTimeout(() => navigate('/dashboard'), 1000);

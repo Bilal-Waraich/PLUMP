@@ -57,15 +57,11 @@ const PersonalInfoForm = ({ formData, setFormData }) => (
 );
 
 const JoinOrgForm = ({ formData, setFormData, organizations, units, loading }) => {
-  console.log('JoinOrgForm props:', { organizations, units, formData });
-  
   // Get units for the selected organization
   const organizationUnits = units.filter(unit => 
     unit.organizationID === (formData.organizationID ? parseInt(formData.organizationID) : null)
   );
   
-  console.log('Filtered units for organization:', organizationUnits);
-
   return (
     <div className="space-y-4">
       <div>
@@ -133,11 +129,8 @@ export default function Signup() {
   const fetchOrganizations = async () => {
     setLoading(true);
     try {
-      console.log('Fetching organizations...');
-      // Fetch all organizations
       const response = await fetchWrapper('/organizations');
-      console.log('Raw API response:', response);
-      
+
       // Check if response is an error object
       if (response.error) {
         console.error('API returned error:', response.error);
@@ -158,7 +151,6 @@ export default function Signup() {
         units: org.units || []
       }));
       
-      console.log('Transformed organizations:', transformedOrgs);
       setOrganizations(transformedOrgs);
       
       // Extract all units from organizations
@@ -172,17 +164,9 @@ export default function Signup() {
         return [...acc, ...orgUnits];
       }, []);
       
-      console.log('Extracted units:', allUnits);
       setUnits(allUnits);
     } catch (err) {
       console.error('Error fetching organizations:', err);
-      // Log the full error object for debugging
-      console.error('Full error details:', {
-        message: err.message,
-        stack: err.stack,
-        response: err.response
-      });
-      
       setStatus({ 
         loading: false, 
         message: err.message || 'Failed to load organizations. Please try again later.', 

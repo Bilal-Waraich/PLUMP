@@ -14,7 +14,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log('JWT payload in validate:', payload);
     // Accept both userID and userId
     const userID = payload.userID ?? payload.userId;
     if (!userID) {
@@ -35,7 +34,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       email: payload.email, 
       role: payload.role 
     };
-    console.log('JWT validate returns:', result);
     return result;
   }
 } 

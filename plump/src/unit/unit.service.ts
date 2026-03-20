@@ -9,8 +9,6 @@ export class UnitService {
 
   async create(createUnitDto: CreateUnitDto) {
     try {
-      console.log('Creating unit with data:', createUnitDto);
-      
       // Validate required fields
       if (!createUnitDto.name) {
         throw new Error('Unit name is required');
@@ -59,7 +57,6 @@ export class UnitService {
           manager: true
         }
       });
-      console.log('Unit created successfully:', unit);
       return unit;
     } catch (error) {
       console.error('Error creating unit:', error);

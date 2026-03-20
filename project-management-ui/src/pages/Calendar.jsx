@@ -9,7 +9,7 @@ import { fetchWrapper } from '../utils/fetchWrapper';
 const months = Array.from({ length: 12 }, (_, i) => format(new Date(2025, i), 'MMMM'));
 const years = Array.from({ length: 10 }, (_, i) => 2020 + i);
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 const EVENT_TYPE_COLORS = {
   PROJECT_START: '#00bfff',

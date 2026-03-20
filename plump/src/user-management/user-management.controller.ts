@@ -40,7 +40,6 @@ export class UserManagementController {
 
   @Get('me-test')
   getMeTest(@Request() req) {
-    console.log('HIT /me-test endpoint');
     return { message: 'me-test works' };
   }
 

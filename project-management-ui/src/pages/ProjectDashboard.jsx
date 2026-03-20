@@ -7,7 +7,7 @@ const iconMap = {
   default: <FaClipboardList className="text-blue-400 text-2xl" />,
 };
 
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 export default function ProjectDashboard() {
   const [search, setSearch] = useState('');

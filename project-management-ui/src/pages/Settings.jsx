@@ -15,9 +15,7 @@ const Settings = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        console.log('Fetching user data...');
         const data = await fetchWrapper('/user-management/me');
-        console.log('User data received:', data);
         setFirstName(data.firstName);
         setLastName(data.lastName);
         setEmail(data.email);
