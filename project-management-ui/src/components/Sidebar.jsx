@@ -72,7 +72,7 @@ const Sidebar = () => {
           className="flex items-center gap-3 mb-10"
         >
           <img
-            src="/plump-logo.png"
+            src="${import.meta.env.BASE_URL}plump-logo.png"
             alt="PLUMP Logo"
             className="w-10 h-10 object-contain"
           />
