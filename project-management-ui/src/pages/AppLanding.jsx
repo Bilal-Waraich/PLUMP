@@ -24,7 +24,7 @@ export default function AppLanding() {
       {/* Logo and App name in top-left */}
       <div className="absolute top-6 left-6 flex items-center gap-2">
         <img
-          src="/plump-logo.png" // Make sure the image is saved correctly here
+          src="${import.meta.env.BASE_URL}plump-logo.png"
           alt="PLUMP Logo"
           className="w-10 h-10 object-contain"
         />
