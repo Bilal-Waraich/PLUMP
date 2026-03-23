@@ -38,7 +38,7 @@ const Login = () => {
         <div className="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-subtle">
           <div className="text-center mb-8">
             <img
-              src="/plump-logo.png"
+              src="${import.meta.env.BASE_URL}plump-logo.png"
               alt="PLUMP Logo"
               className="w-12 h-12 mx-auto mb-4 rounded-full"
             />
